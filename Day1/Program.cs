@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdventOfCode1;
 
-namespace AdventOfCode1
+namespace Day1
 {
     internal class Program
     {
@@ -29,9 +30,6 @@ namespace AdventOfCode1
 
                     currentEmployeeNumber++;
                     provisionList = new List<FoodItem>();
-
-                    continue;
-
                 } else
                 {
                     provisionList.Add(new FoodItem { calories = int.Parse(line) });
@@ -41,7 +39,7 @@ namespace AdventOfCode1
 
             Console.WriteLine($"Expedition consists of {expedition.Count} elves");
 
-            var sortedList = expedition.OrderByDescending(i => i.GetProvisionCalorieCount());
+            var sortedList = expedition.OrderByDescending(i => i.GetProvisionCalorieCount()).ToList();
 
             // Part 1
             var heaviestCalorieLoad = sortedList.First();
@@ -50,13 +48,13 @@ namespace AdventOfCode1
                 $" with a provision of {heaviestCalorieLoad.GetProvisionCalorieCount()}");
 
             // Part 2
-            var top3hoggers = sortedList.Take(3).ToList();
-            var top3provisionsList = top3hoggers.Sum(x => x.GetProvisionCalorieCount());
+            var top3Hoggers = sortedList.Take(3).ToList();
+            var top3ProvisionsList = top3Hoggers.Sum(x => x.GetProvisionCalorieCount());
 
-            Console.WriteLine($"Answer: Elf nr {top3hoggers[0].employeeNumber}, " +
-                $"nr {top3hoggers[1].employeeNumber} " +
-                $"and {top3hoggers[2].employeeNumber}," +
-                $" with a calorie count of {top3provisionsList} calories");
+            Console.WriteLine($"Answer: Elf nr {top3Hoggers[0].employeeNumber}, " +
+                $"nr {top3Hoggers[1].employeeNumber} " +
+                $"and {top3Hoggers[2].employeeNumber}," +
+                $" with a calorie count of {top3ProvisionsList} calories");
 
         }
     }
