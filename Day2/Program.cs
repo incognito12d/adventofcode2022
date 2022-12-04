@@ -69,7 +69,6 @@ namespace Day2
             };
         }
 
-
         private static int GetMoveScore(char counterMove)
         {
             return counterMove switch
