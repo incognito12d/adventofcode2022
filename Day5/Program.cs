@@ -12,7 +12,8 @@ namespace Day5
         static void Main(string[] args)
         {
             var stackLines= File.ReadLines(@"C:\AdventOfCode\5\input.txt")
-                .TakeWhile(line => line.Contains("["));
+                .TakeWhile(line => line.Contains("["))
+                .Reverse();
 
             var stacks = new Dictionary<int, Stack>();
             for (int i = 1; i < 10; i++)
@@ -36,9 +37,29 @@ namespace Day5
             }
 
             var moveLines = File.ReadLines(@"C:\AdventOfCode\5\input.txt")
-                .SkipWhile(line => !line.StartsWith("move"));
+                .SkipWhile(line => !line.StartsWith("move"))
+                .ToList();
 
-            Console.WriteLine("Hello World!");
+            foreach (var moveLine in moveLines)
+            {
+                var moveNrOfCrate = int.Parse(moveLine.Split("move ")[1].Split(" from")[0]);
+                var fromStackNr = int.Parse(moveLine.Split("from ")[1].Split(" to")[0]);
+                var toStackNr = int.Parse(moveLine.Split("to ")[1]);
+
+                for (int i = 0; i < moveNrOfCrate; i++)
+                {
+                    var crate = stacks[fromStackNr].Pop()?.ToString();  
+                    stacks[toStackNr].Push(crate);
+                }
+            }
+
+            var result  = "";
+            for (int i = 1; i < stacks.Count() + 1; i++)
+            {
+                result += stacks[i].Pop();
+            }
+
+            Console.WriteLine(result);
         }
     }
 }
