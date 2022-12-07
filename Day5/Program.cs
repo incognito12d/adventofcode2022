@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Day5
 {
@@ -11,12 +10,29 @@ namespace Day5
     {
         static void Main(string[] args)
         {
-            var stackLines= File.ReadLines(@"C:\AdventOfCode\5\input.txt")
+            var useCrateMover9001 = false;
+
+            Console.WriteLine("1: CrateMover 9000 (Part 1)");
+            Console.WriteLine("2: CrateMover 9001 (Part 2)");
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    break;
+                case "2":
+                    useCrateMover9001 = true;
+                    break;
+                default:
+                    Console.WriteLine("Illegal input");
+                    Environment.Exit(-1);
+                    break;
+            }
+
+            var stackLines = File.ReadLines(@"C:\AdventOfCode\5\input.txt")
                 .TakeWhile(line => line.Contains("["))
                 .Reverse();
 
             var stacks = new Dictionary<int, Stack>();
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
                 var crates = new Stack();
                 stacks.Add(i, crates);
@@ -25,7 +41,7 @@ namespace Day5
             foreach (var line in stackLines)
             {
                 var stackNr = 1;
-                for (int i = 0; i < line.Length; i += 4)
+                for (var i = 0; i < line.Length; i += 4)
                 {
                     var box = line.Substring(i, 4);
                     if (box.StartsWith("["))
@@ -46,20 +62,29 @@ namespace Day5
                 var fromStackNr = int.Parse(moveLine.Split("from ")[1].Split(" to")[0]);
                 var toStackNr = int.Parse(moveLine.Split("to ")[1]);
 
-                for (int i = 0; i < moveNrOfCrate; i++)
+                var crates = new List<string>();
+                for (var i = 0; i < moveNrOfCrate; i++)
                 {
-                    var crate = stacks[fromStackNr].Pop()?.ToString();  
+                    crates.Add(stacks[fromStackNr].Pop()?.ToString());  
+                    
+                }
+
+                if (useCrateMover9001)
+                    crates.Reverse();
+
+                foreach (var crate in crates)
+                {
                     stacks[toStackNr].Push(crate);
                 }
             }
 
             var result  = "";
-            for (int i = 1; i < stacks.Count() + 1; i++)
+            for (var i = 1; i < stacks.Count() + 1; i++)
             {
                 result += stacks[i].Pop();
             }
 
-            Console.WriteLine(result);
+            Console.WriteLine($"Result: {result}");
         }
     }
 }
